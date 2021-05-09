@@ -1,10 +1,26 @@
-import "./styles.css";
+import React, { useState, useEffect } from "react";
 
 export default function App() {
+  const [location, setLocation] = useState({});
+
+  useEffect(() => {
+    const watchId = navigator.geolocation.watchPosition(handlePositionReceived);
+
+    return () => navigator.geolocation.clearWatch(watchId);
+  }, []);
+
+  function handlePositionReceived(coords) {
+    const { latitude, longitude } = coords;
+
+    setLocation({ latitude, longitude });
+    //console.log(coordinates);
+  }
   return (
-    <div className="App">
-      <h1>Hello CodeSandbox</h1>
-      <h2>Start editing to see some magic happen!</h2>
-    </div>
+    <>
+      <h1>Geolocalização</h1>
+      Latitude: {location.latitude}
+      <br />
+      Longitude: {location.longitude}
+    </>
   );
 }
